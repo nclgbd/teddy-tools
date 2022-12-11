@@ -1,3 +1,4 @@
+imblearn
 pyyaml
 rich
 scikit-learn
