@@ -1,4 +1,4 @@
-# -s=tests/config/modelconfig/logisticregression.yaml
+# tests/config/modelconfig/logisticregression.yaml
 model_name: LogisticRegression
 mode: train
 model_params:
