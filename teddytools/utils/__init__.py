@@ -65,12 +65,12 @@ def get_console():
     return _console
 
 
-def load_yaml(path: os.PathLike = "./repl.yml"):
+def load_yaml(path: os.PathLike):
     """
     Loads a yaml file.
 
     ## Args:
-        `path` (`os.PathLike`): Path to the yaml file. Defaults to `"repl.yml"`.
+        `path` (`os.PathLike`): Path to the yaml file.
 
     ## Returns:
         `dict`: The yaml file as a dictionary.
