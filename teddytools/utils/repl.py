@@ -43,3 +43,5 @@ def install(
         show_locals=show_locals,
         width=width,
     )
+
+install()
