@@ -1,0 +1,28 @@
+# tests/config/runconfig/run.yml
+type: train
+
+modules:
+  azureml:
+    debug: false
+    enabled: false
+
+  sklearn:
+    debug: true
+    enabled: true
+    model_config_yaml_path: tests/config/runconfig/modelconfig/logisticregression.yaml
+    contrib:
+      imblearn:
+        enabled: false
+        settings:
+          sampler: RandomOverSampler
+
+  torch:
+    debug: false
+    enabled: false
+    ecosystem:
+      ignite:
+        enabled: false
+        settings:
+      monai:
+        enabled: false
+        settings:
