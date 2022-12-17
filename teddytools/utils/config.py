@@ -9,7 +9,7 @@ def yaml_to_namespace(yaml_path):
     return Namespace(**config)
 
 
-class BaseConfiguration(Namespace):
+class _BaseConfiguration(Namespace):
     def __init__(
         self,
         parser: ArgumentParser = None,
@@ -37,7 +37,17 @@ class BaseConfiguration(Namespace):
         self.__init__(**vars(self.args))
 
 
-class ModelConfiguration(BaseConfiguration):
+class Configuration(_BaseConfiguration):
+    def __init__(
+        self,
+        parser: ArgumentParser = None,
+        yaml_file: os.PathLike = "",
+        **kwargs,
+    ):
+        super().__init__(parser, yaml_file, **kwargs)
+
+
+class ModelConfiguration(Configuration):
     def __init__(
         self,
         parser: ArgumentParser = None,
