@@ -10,6 +10,9 @@ modules:
     debug: true
     enabled: true
     model_config_yaml_path: tests/config/runconfig/modelconfig/logisticregression.yaml
+    pipelines:
+      train_pipeline:
+        name: train
     contrib:
       imblearn:
         enabled: false

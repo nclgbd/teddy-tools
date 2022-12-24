@@ -54,6 +54,4 @@ class SKLearnModelConfiguration(ModelConfiguration):
         ## Returns:
             `model` (`base.BaseEstimator`): The model.
         """
-        model: base.BaseEstimator = self.model
-        model.set_params(**self.model_params)
-        return model
+        self.model = self.model.set_params(**self.model_params)
