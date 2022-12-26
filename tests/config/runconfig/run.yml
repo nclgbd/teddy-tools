@@ -11,8 +11,13 @@ modules:
     enabled: true
     model_config_yaml_path: tests/config/runconfig/modelconfig/logisticregression.yaml
     pipelines:
-      train_pipeline:
-        name: train
+      configuration: train
+      train:
+        steps:
+          - PCA:
+              n_components: 2
+          - StandardScaler:
+              with_mean: false
     contrib:
       imblearn:
         enabled: false

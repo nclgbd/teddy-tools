@@ -1,6 +1,5 @@
 # config/modelconfig/logisticregression.yaml
 model_name: LogisticRegression
-mode: train
 random_state: 42
 
 configurations:

@@ -32,7 +32,7 @@ class SKLearnModelConfiguration(ModelConfiguration):
         for model_library in self._SKLEARN_MODELS:
             if hasattr(model_library, self.model_name):
                 base_model: base.BaseEstimator = getattr(model_library, self.model_name)
-                return base_model
+                return base_model()
 
     def set_mode(self, mode: str = "train"):
         """
@@ -47,11 +47,16 @@ class SKLearnModelConfiguration(ModelConfiguration):
         model: base.BaseEstimator = self.__get_base_model()
         return model
 
-    def build_model(self):
+    def build_model(self, mode="train", return_clf=True):
         """
         Build the model.
 
         ## Returns:
             `model` (`base.BaseEstimator`): The model.
         """
-        self.model = self.model.set_params(**self.model_params)
+        model_params = self.configurations[mode]["model_params"]
+        self.set_mode(mode)
+        self.model.set_params(**model_params)
+
+        if return_clf:
+            return self.model

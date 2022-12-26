@@ -26,7 +26,6 @@ class TestSKLearnModelConfiguration:
 
         # model_config
         assert model_config.model is not None
-        assert model_config.mode == "train"
         assert model_config.model_name == "LogisticRegression"
         assert model_config.random_state == 42
 
@@ -49,7 +48,6 @@ class TestSKLearnModelConfiguration:
 
         # model_config
         assert model_config.model is not None
-        assert model_config.mode == "train"
         assert model_config.model_name == "LogisticRegression"
         assert model_config.random_state == 42
 
