@@ -30,7 +30,7 @@ jobs:
       - name: Build teddytools
         run: |
           python -m build
-          python -m pip install dist/*.whl
+          pip install dist/*.whl
       - name: Run smoke tests
         run: |
           ls -la
