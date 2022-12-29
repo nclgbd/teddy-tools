@@ -1,4 +1,5 @@
 imblearn
+mlflow
 pyyaml
 rich
 scikit-learn
