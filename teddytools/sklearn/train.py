@@ -84,6 +84,7 @@ def main(args):
     train_config = model_config.configurations["train"]
 
     # step 1a: load data
+    # TODO: add way to load custom data
     if run_config._test == True:
         X, y = load_digits(return_X_y=True)
 
