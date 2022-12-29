@@ -1,12 +1,12 @@
 # tests/config/runconfig/run.yml
+_path: tests/config/runconfig/run.yml
+_test: true
 configuration: train
 debug: false
 dry_run: true
 model_config_yaml_path: tests/config/modelconfig/logisticregression.yaml
 type: train
 use_mlflow: true
-_path: tests/config/runconfig/run.yml
-_test: true
 
 # azureml related configurations
 azureml:
