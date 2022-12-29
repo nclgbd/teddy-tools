@@ -29,8 +29,9 @@ jobs:
           python -m pip install pytest rich
       - name: Build teddytools
         run: |
-          pip install -e .
+          python -m build
+          python -m pip install dist/*.whl
       - name: Run smoke tests
         run: |
           ls -la
-          pytest
+          pytest .
