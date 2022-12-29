@@ -15,6 +15,7 @@ class TestSKLearnModelConfiguration:
         run_config = Configuration(yaml_file=run_config_yaml_path)
         return run_config
 
+    @pytest.mark.smoketest
     def test_model_config_yaml_path_from_conftest(self, model_config_yaml_path: str):
         """
         The model configuration yaml file.
@@ -35,6 +36,7 @@ class TestSKLearnModelConfiguration:
         assert train_config["model_params"]["random_state"] == 42
         assert train_config["train_test_split"]["test_size"] == 0.2
 
+    @pytest.mark.smoketest
     def test_model_config_yaml_path_from_run_yml(self, run_config: Configuration):
         """
         The model configuration yaml file.

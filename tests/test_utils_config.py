@@ -1,3 +1,4 @@
+import pytest
 from argparse import Namespace, ArgumentParser
 
 # teddytools imports
@@ -8,6 +9,7 @@ repl.install()
 
 
 class TestConfiguration:
+    @pytest.mark.smoketest
     def test_run_config_yaml_path(self, run_config_yaml_path: str):
         """
         The run configuration yaml file.
@@ -24,6 +26,7 @@ class TestConfiguration:
         assert any(run_config.torch)
         assert any(run_config.azureml)
 
+    @pytest.mark.smoketest
     def test_model_config_yaml_path(self, model_config_yaml_path: str):
         """
         The model configuration yaml file.

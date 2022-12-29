@@ -35,4 +35,4 @@ jobs:
       - name: Run smoke tests
         run: |
           ls -la
-          pytest .
+          pytest -v -m smoketest

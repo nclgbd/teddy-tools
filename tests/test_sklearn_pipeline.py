@@ -25,6 +25,7 @@ class TestPipeline:
         model_config = SKLearnModelConfiguration(yaml_file=model_config_yaml_path)
         return model_config
 
+    @pytest.mark.smoketest
     def test_build_preprocessing_pipeline(
         self,
         model_config: SKLearnModelConfiguration,
@@ -50,6 +51,7 @@ class TestPipeline:
 
         assert output is not None
 
+    @pytest.mark.smoketest
     def test_build_clf(
         self, run_config: Configuration, model_config: SKLearnModelConfiguration, data
     ):
