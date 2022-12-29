@@ -1,36 +1,35 @@
 # tests/config/runconfig/run.yml
+configuration: train
+debug: false
+dry_run: true
+model_config_yaml_path: tests/config/modelconfig/logisticregression.yaml
 type: train
+use_mlflow: true
+_path: tests/config/runconfig/run.yml
+_test: true
 
-modules:
-  azureml:
-    debug: false
-    enabled: false
+# azureml related configurations
+azureml:
+  enabled: false
 
-  sklearn:
-    debug: true
-    enabled: true
-    model_config_yaml_path: tests/config/runconfig/modelconfig/logisticregression.yaml
-    pipelines:
-      configuration: train
-      train:
-        steps:
-          - PCA:
-              n_components: 2
-          - StandardScaler:
-              with_mean: false
-    contrib:
-      imblearn:
-        enabled: false
-        settings:
-          sampler: RandomOverSampler
+# sklearn related configurations
+sklearn:
+  sampler: false
+  # run configurations
+  configurations:
+    train:
+      steps:
+        - PCA:
+            n_components: 2
+        - StandardScaler:
+            with_mean: false
 
-  torch:
-    debug: false
-    enabled: false
-    ecosystem:
-      ignite:
-        enabled: false
-        settings:
-      monai:
-        enabled: false
-        settings:
+# pytorch related configurations
+torch:
+  ecosystem:
+    ignite:
+      enabled: false
+      settings:
+    monai:
+      enabled: false
+      settings:

@@ -1,4 +1,5 @@
 # config/modelconfig/logisticregression.yaml
+_path: config/modelconfig/logisticregression.yaml
 model_name: LogisticRegression
 random_state: 42
 

@@ -21,4 +21,4 @@ def run_config_yaml_path():
 @pytest.fixture
 def model_config_yaml_path():
     # returns the path to the model configuration yaml file
-    return "tests/config/runconfig/modelconfig/logisticregression.yaml"
+    return "tests/config/modelconfig/logisticregression.yaml"

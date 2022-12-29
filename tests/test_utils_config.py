@@ -1,7 +1,7 @@
 from argparse import Namespace, ArgumentParser
 
 # teddytools imports
-from teddytools.utils.config import Configuration
+from teddytools.utils.config import Configuration, ModelConfiguration
 from teddytools.utils import repl
 
 repl.install()
@@ -20,11 +20,19 @@ class TestConfiguration:
         # run_config
         assert run_config is not None
         assert run_config.type == "train"
+        assert any(run_config.sklearn)
+        assert any(run_config.torch)
+        assert any(run_config.azureml)
 
-        # modules
-        assert run_config.modules is not None
+    def test_model_config_yaml_path(self, model_config_yaml_path: str):
+        """
+        The model configuration yaml file.
 
-        modules = run_config.modules
-        assert any(modules["sklearn"])
-        assert any(modules["torch"])
-        assert any(modules["azureml"])
+        ## Args:
+            `model_config_yaml_path` (`str`): the path to the model configuration yaml file
+        """
+        model_config = ModelConfiguration(yaml_file=model_config_yaml_path)
+
+        # model_config
+        assert model_config is not None
+        assert any(model_config.configurations["train"])

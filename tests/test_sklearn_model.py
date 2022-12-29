@@ -42,8 +42,7 @@ class TestSKLearnModelConfiguration:
         ## Args:
             `model_config_yaml_path` (`str`): the path to the model configuration yaml file
         """
-        sklearn_run_config = run_config.modules["sklearn"]
-        model_config_yaml_path = sklearn_run_config["model_config_yaml_path"]
+        model_config_yaml_path = run_config.model_config_yaml_path
         model_config = SKLearnModelConfiguration(yaml_file=model_config_yaml_path)
 
         # model_config

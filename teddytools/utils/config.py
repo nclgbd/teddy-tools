@@ -12,12 +12,12 @@ def yaml_to_namespace(yaml_path):
 class _BaseConfiguration(Namespace):
     def __init__(
         self,
-        parser: ArgumentParser = None,
+        args: Namespace = None,
         yaml_file: os.PathLike = "",
         **kwargs,
     ):
-        if parser is not None:
-            self.args = parser.parse_args()
+        if args is not None:
+            self.args = args
         elif yaml_file:
             self.args = yaml_to_namespace(yaml_file)
         elif kwargs:
@@ -27,11 +27,11 @@ class _BaseConfiguration(Namespace):
 
     def set_configuration(
         self,
-        parser: ArgumentParser = None,
+        args: Namespace = None,
         yaml_file: os.PathLike = "",
         **kwargs,
     ):
-        self.__init__(parser, yaml_file, **kwargs)
+        self.__init__(args, yaml_file, **kwargs)
 
     def reset_configuration(self):
         self.__init__(**vars(self.args))
@@ -40,21 +40,21 @@ class _BaseConfiguration(Namespace):
 class Configuration(_BaseConfiguration):
     def __init__(
         self,
-        parser: ArgumentParser = None,
+        args: Namespace = None,
         yaml_file: os.PathLike = "",
         **kwargs,
     ):
-        super().__init__(parser, yaml_file, **kwargs)
+        super().__init__(args, yaml_file, **kwargs)
 
 
 class ModelConfiguration(Configuration):
     def __init__(
         self,
-        parser: ArgumentParser = None,
+        args: Namespace = None,
         yaml_file: os.PathLike = "",
         **kwargs,
     ):
-        super().__init__(parser, yaml_file, **kwargs)
+        super().__init__(args, yaml_file, **kwargs)
 
     def create_model(self):
         raise NotImplementedError(

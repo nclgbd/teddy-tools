@@ -23,11 +23,9 @@ def build_preprocessing_pipeline(
         else run_config
     )
     pipeline = Pipeline(steps=[])
-    sklearn_configurations = run_config.modules["sklearn"]
-    pipeline_configuration_name = sklearn_configurations["pipelines"]["configuration"]
-    pipeline_steps = sklearn_configurations["pipelines"][pipeline_configuration_name][
-        "steps"
-    ]
+    sklearn_configurations = run_config.sklearn
+    run_type = run_config.type
+    pipeline_steps = sklearn_configurations["configurations"][run_type]["steps"]
 
     # for step, step_params in pipeline_steps:
     for _pipeline_step in pipeline_steps:
@@ -56,11 +54,8 @@ def build_clf(
         if run_config is None
         else run_config
     )
-    sklearn_model_config_yaml_path = run_config.modules["sklearn"][
-        "model_config_yaml_path"
-    ]
     model_config_yaml_path = (
-        sklearn_model_config_yaml_path
+        run_config.model_config_yaml_path
         if model_config_yaml_path == ""
         else model_config_yaml_path
     )
