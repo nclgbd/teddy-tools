@@ -6,24 +6,20 @@ from sklearn.datasets import load_digits
 from sklearn.model_selection import train_test_split
 
 # teddytools imports
-from teddytools.utils.config import Configuration
-from teddytools.utils import repl
-from teddytools.sklearn.model import SKLearnModelConfiguration
-from teddytools.sklearn.pipeline import *
-from teddytools.sklearn.train import main
+from teddytools.utils import repl, get_console
+from teddytools.train import train
 
 repl.install()
+console = get_console()
 
 
 class TestTrain:
-
-    def test_basic_train(self, data, run_config_yaml_file, model_config_yaml_file):
+    def test_basic_train(self, run_config_yaml_file, model_config_yaml_file):
         args = Namespace(
             run_config_yaml_file=run_config_yaml_file,
             model_config_yaml_file=model_config_yaml_file,
         )
 
-        X, y = data
-        main(X, y, args)
+        train(args)
 
         assert True

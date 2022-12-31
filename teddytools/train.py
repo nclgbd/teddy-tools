@@ -1,11 +1,7 @@
 # common imports
 import numpy as np
-import os
-import pandas as pd
-from argparse import ArgumentParser
 
 # sklearn imports
-from sklearn import base
 from sklearn.datasets import load_digits
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
@@ -69,7 +65,7 @@ def mlflow_setup(
     return mlflow_run
 
 
-def main(X: np.ndarray, y: np.ndarray, args):
+def train(args, X: np.ndarray = None, y: np.ndarray = None):
 
     # step 0: load configurations
     run_config = Configuration(yaml_file=args.run_config_yaml_file)
@@ -90,7 +86,10 @@ def main(X: np.ndarray, y: np.ndarray, args):
     random_state = run_config.random_state
 
     # step 1: preprocess data using preprocessing pipeline
-    preprocessing_pipeline = build_preprocessing_pipeline(
+    if run_config._test and X is None and y is None:
+        X, y = load_digits(return_X_y=True)
+
+    preprocessing_pipeline = build_pipeline(
         run_config=run_config,
     )
     X = preprocessing_pipeline.fit_transform(X, y)
@@ -124,4 +123,4 @@ def main(X: np.ndarray, y: np.ndarray, args):
 if __name__ == "__main__":
     parser = create_default_parser()
     args = parser.parse_args()
-    main(args)
+    train(args)

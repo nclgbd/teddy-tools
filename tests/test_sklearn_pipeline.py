@@ -43,7 +43,7 @@ class TestPipeline:
             `run_config_yaml_file` (`str`): the path to the run configuration yaml file
         """
 
-        pipeline = build_preprocessing_pipeline(
+        pipeline = build_pipeline(
             run_config=run_config,
         )
 
@@ -66,7 +66,7 @@ class TestPipeline:
             `run_config_yaml_file` (`str`): the path to the run configuration yaml file
         """
 
-        preprocessing_pipeline = build_preprocessing_pipeline(
+        preprocessing_pipeline = build_pipeline(
             run_config=run_config,
         )
         X, y = data

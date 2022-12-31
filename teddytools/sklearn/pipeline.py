@@ -11,7 +11,8 @@ from teddytools.utils.config import Configuration, create_configuration_from_yam
 _AVAILABLE_PREPROCESSING_STEPS = [decomposition, preprocessing]
 
 
-def build_preprocessing_pipeline(
+def build_pipeline(
+    pipeline_name: str = "preprocessing",
     run_config: Configuration = None,
     run_config_yaml_path: os.PathLike = "",
 ):
@@ -25,7 +26,7 @@ def build_preprocessing_pipeline(
     )
     pipeline = Pipeline(steps=[])
     sklearn_configurations = run_config.pipelines
-    pipeline_steps = sklearn_configurations["preprocessing"]["steps"]
+    pipeline_steps = sklearn_configurations[pipeline_name]["steps"]
 
     # for step, step_params in pipeline_steps:
     for _pipeline_step in pipeline_steps:
@@ -34,8 +35,8 @@ def build_preprocessing_pipeline(
         # console.log(f"Adding {step} to pipeline...")
         for processing_step in _AVAILABLE_PREPROCESSING_STEPS:
             if hasattr(processing_step, step_name):
-                step_class = getattr(processing_step, step_name)
-                step_instance = step_class(**step_params)
+                StepClass = getattr(processing_step, step_name)
+                step_instance = StepClass(**step_params)
                 pipeline.steps.append((step_name.lower(), step_instance))
 
     return pipeline
