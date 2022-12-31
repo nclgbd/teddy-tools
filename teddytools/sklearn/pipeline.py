@@ -1,3 +1,7 @@
+"""
+Functionality to build `sklearn` pipelines.
+"""
+# common imports
 import os
 
 # sklearn imports
@@ -14,17 +18,28 @@ _AVAILABLE_PREPROCESSING_STEPS = [decomposition, preprocessing]
 def build_pipeline(
     pipeline_name: str = "preprocessing",
     run_config: Configuration = None,
-    run_config_yaml_path: os.PathLike = "",
+    run_config_yaml_file: os.PathLike = "",
 ):
+    """
+    Build a `sklearn` pipeline.
+
+    ## Args:
+        `pipeline_name` (`str`, optional): _description_. Defaults to `"preprocessing"`.
+        `run_config` (`Configuration`, optional): _description_. Defaults to `None`.
+        `run_config_yaml_file` (`os.PathLike`, optional): _description_. Defaults to `""`.
+
+    ## Returns:
+        `Pipeline`: A `sklearn` pipeline.
+    """
     # get the configuration
     run_config = (
         create_configuration_from_yaml(
-            yaml_file=run_config_yaml_path, _configuration_class=Configuration
+            yaml_file=run_config_yaml_file, _configuration_class=Configuration
         )
         if run_config is None
         else run_config
     )
-    pipeline = Pipeline(steps=[])
+    pipeline: Pipeline = Pipeline(steps=[])
     sklearn_configurations = run_config.pipelines
     pipeline_steps = sklearn_configurations[pipeline_name]["steps"]
 

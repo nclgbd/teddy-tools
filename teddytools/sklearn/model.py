@@ -1,9 +1,11 @@
+"""
+`sklearn` model configuration class. Inherits from `ModelConfiguration` class to infer the model parameters from the provided configuration file.
+"""
+# common imports
 import os
-from argparse import ArgumentParser
 
+# sklearn imports
 from sklearn import base, linear_model, naive_bayes, neighbors, svm, tree
-from sklearn.model_selection import train_test_split
-from sklearn.model_selection._search import BaseSearchCV
 
 # local imports
 from teddytools.utils.config import Configuration, ModelConfiguration
@@ -14,8 +16,6 @@ class SKLearnModelConfiguration(ModelConfiguration):
 
     def __init__(
         self,
-        parser: ArgumentParser = None,
-        yaml_file: os.PathLike = "",
         **kwargs,
     ):
         """
@@ -24,8 +24,9 @@ class SKLearnModelConfiguration(ModelConfiguration):
         ## Args:
             `parser` (`ArgumentParser`, optional): Defaults to `None`.
             `yaml_file` (`os.PathLike`, optional): Defaults to `""`.
+            `**kwargs`: Additional keyword arguments.
         """
-        super().__init__(parser, yaml_file, **kwargs)
+        super().__init__(**kwargs)
         self.model: base.BaseEstimator = self.create_model()
 
     def __get_base_model(self):
@@ -52,6 +53,7 @@ class SKLearnModelConfiguration(ModelConfiguration):
         Build the model.
 
         ## Returns:
+            `mode` (`str`): The mode of the model. Defaults to `"train"`.
             `model` (`base.BaseEstimator`): The model.
         """
         model_params = self.configurations[mode]["model_params"]
@@ -69,6 +71,16 @@ def build_clf(
     run_config_yaml_file: os.PathLike = "",
     _type: str = None,
 ):
+    """
+    Build the classifier.
+
+    ## Args:
+        `model_config` (`SKLearnModelConfiguration`, optional): . Defaults to `None`.
+        `model_config_yaml_file` (`os.PathLike`, optional): Defaults to `""`.
+        `run_config` (`Configuration`, optional): Defaults to `None`.
+        `run_config_yaml_file` (`os.PathLike`, optional): Defaults to `""`.
+        `_type` (`str`, optional): Defaults to `None`.
+    """
 
     # get the configuration
     run_config = (

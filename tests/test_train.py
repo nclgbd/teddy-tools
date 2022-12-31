@@ -1,9 +1,5 @@
-from argparse import Namespace, ArgumentParser
+from argparse import Namespace
 import pytest
-
-# sklearn imports
-from sklearn.datasets import load_digits
-from sklearn.model_selection import train_test_split
 
 # teddytools imports
 from teddytools.utils import repl, get_console
