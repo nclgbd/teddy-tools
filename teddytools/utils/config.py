@@ -3,60 +3,69 @@ import yaml
 import os
 
 
-def yaml_to_namespace(yaml_path):
-    with open(yaml_path, "r") as f:
-        config = yaml.safe_load(f)
-    return Namespace(**config)
-
-
 class _BaseConfiguration(Namespace):
     def __init__(
         self,
-        args: Namespace = None,
+        parser: ArgumentParser = None,
         yaml_file: os.PathLike = "",
         **kwargs,
     ):
-        if args is not None:
-            self.args = args
-        elif yaml_file:
-            self.args = yaml_to_namespace(yaml_file)
-        elif kwargs:
-            self.args = Namespace(**kwargs)
+        self.__args: dict = {}
+        if parser is not None:
+            args = parser.parse_args()
+            self.__args.update(vars(args))
 
-        super().__init__(**vars(self.args))
+        else:
+            with open(yaml_file, "r") as f:
+                args = yaml.safe_load(f)
+                self.__args.update(args)
+
+        self.__args.update(kwargs)
+
+        super().__init__(**self.__args)
 
     def set_configuration(
         self,
-        args: Namespace = None,
+        parser: ArgumentParser = None,
         yaml_file: os.PathLike = "",
         **kwargs,
     ):
-        self.__init__(args, yaml_file, **kwargs)
+        self.__init__(parser, yaml_file, **kwargs)
 
     def reset_configuration(self):
-        self.__init__(**vars(self.args))
+        self.__init__(**vars(self.__args))
 
 
 class Configuration(_BaseConfiguration):
     def __init__(
         self,
-        args: Namespace = None,
+        parser: ArgumentParser = None,
         yaml_file: os.PathLike = "",
         **kwargs,
     ):
-        super().__init__(args, yaml_file, **kwargs)
+        super().__init__(parser, yaml_file, **kwargs)
 
 
 class ModelConfiguration(Configuration):
     def __init__(
         self,
-        args: Namespace = None,
+        parser: ArgumentParser = None,
         yaml_file: os.PathLike = "",
         **kwargs,
     ):
-        super().__init__(args, yaml_file, **kwargs)
+        super().__init__(parser, yaml_file, **kwargs)
 
     def create_model(self):
         raise NotImplementedError(
             "`create_model()` method is not implemented. Please implement it in your subclass."
         )
+
+
+def create_configuration_from_yaml(
+    yaml_file: os.PathLike, _configuration_class: _BaseConfiguration
+):
+    with open(yaml_file, "r") as f:
+        y = yaml.safe_load(f)
+
+    config = _configuration_class(**y)
+    return config
