@@ -6,7 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.model_selection._search import BaseSearchCV
 
 # local imports
-from teddytools.utils.config import ModelConfiguration
+from teddytools.utils.config import Configuration, ModelConfiguration
 
 
 class SKLearnModelConfiguration(ModelConfiguration):
@@ -60,3 +60,35 @@ class SKLearnModelConfiguration(ModelConfiguration):
 
         if return_clf:
             return self.model
+
+
+def build_clf(
+    model_config: SKLearnModelConfiguration = None,
+    model_config_yaml_file: os.PathLike = "",
+    run_config: Configuration = None,
+    run_config_yaml_file: os.PathLike = "",
+    _type: str = None,
+):
+
+    # get the configuration
+    run_config = (
+        Configuration(yaml_file=run_config_yaml_file)
+        if run_config is None
+        else run_config
+    )
+    model_config_yaml_file = (
+        run_config.model_config_yaml_file
+        if model_config_yaml_file == ""
+        else model_config_yaml_file
+    )
+
+    # get the model configuration
+    model_config = (
+        SKLearnModelConfiguration(yaml_file=model_config_yaml_file)
+        if model_config is None
+        else model_config
+    )
+
+    # get the model parameters
+    run_type = run_config.configuration if _type is None else _type
+    model_config.build_model(mode=run_type)

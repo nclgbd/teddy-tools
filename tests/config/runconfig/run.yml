@@ -1,35 +1,23 @@
-# tests/config/runconfig/run.yml
-_path: tests/config/runconfig/run.yml
+# test run configuration
 _test: true
 configuration: train
-debug: false
+debug: true
 dry_run: true
-model_config_yaml_path: tests/config/modelconfig/logisticregression.yaml
-type: train
+random_state: 42
+
+# pathing
+yaml_file: tests/config/runconfig/run.yml
+model_config_yaml_file: tests/config/modelconfig/logisticregression.yaml
+
+# rule of thumb: if adding a flag causes a code rework to the pipeline, then it should be in this config
+use_cv: true
 use_mlflow: true
 
-# azureml related configurations
-azureml:
-  enabled: false
-
-# sklearn related configurations
-sklearn:
-  sampler: false
-  # run configurations
-  configurations:
-    train:
-      steps:
-        - PCA:
-            n_components: 2
-        - StandardScaler:
-            with_mean: false
-
-# pytorch related configurations
-torch:
-  ecosystem:
-    ignite:
-      enabled: false
-      settings:
-    monai:
-      enabled: false
-      settings:
+# different configurations available for the project
+pipelines:
+  preprocessing:
+    steps:
+      - PCA:
+          n_components: 2
+      - StandardScaler:
+          with_mean: false

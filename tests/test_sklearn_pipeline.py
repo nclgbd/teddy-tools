@@ -6,9 +6,9 @@ from sklearn.datasets import load_digits
 from sklearn.model_selection import train_test_split
 
 # teddytools imports
-from teddytools.utils.config import Configuration
+from teddytools.utils.config import Configuration, create_configuration_from_yaml
 from teddytools.utils import repl
-from teddytools.sklearn.model import SKLearnModelConfiguration
+from teddytools.sklearn.model import SKLearnModelConfiguration, build_clf
 from teddytools.sklearn.pipeline import *
 
 repl.install()
@@ -16,19 +16,23 @@ repl.install()
 
 class TestPipeline:
     @pytest.fixture
-    def run_config(self, run_config_yaml_path):
-        run_config = Configuration(yaml_file=run_config_yaml_path)
+    def run_config(self, run_config_yaml_file):
+        run_config = create_configuration_from_yaml(
+            yaml_file=run_config_yaml_file, _configuration_class=Configuration
+        )
         return run_config
 
     @pytest.fixture
-    def model_config(self, model_config_yaml_path):
-        model_config = SKLearnModelConfiguration(yaml_file=model_config_yaml_path)
+    def model_config(self, model_config_yaml_file):
+        model_config = create_configuration_from_yaml(
+            yaml_file=model_config_yaml_file,
+            _configuration_class=SKLearnModelConfiguration,
+        )
         return model_config
 
     @pytest.mark.smoketest
     def test_build_preprocessing_pipeline(
         self,
-        model_config: SKLearnModelConfiguration,
         run_config: Configuration,
         data,
     ):
@@ -36,7 +40,7 @@ class TestPipeline:
         The run configuration yaml file.
 
         ## Args:
-            `run_config_yaml_path` (`str`): the path to the run configuration yaml file
+            `run_config_yaml_file` (`str`): the path to the run configuration yaml file
         """
 
         pipeline = build_preprocessing_pipeline(
@@ -59,7 +63,7 @@ class TestPipeline:
         The run configuration yaml file.
 
         ## Args:
-            `run_config_yaml_path` (`str`): the path to the run configuration yaml file
+            `run_config_yaml_file` (`str`): the path to the run configuration yaml file
         """
 
         preprocessing_pipeline = build_preprocessing_pipeline(
@@ -81,11 +85,11 @@ class TestPipeline:
         # configurations
         train_config = model_config.configurations["train"]
         assert train_config is not None
-        assert train_config["model_params"]["random_state"] == 42
+        assert train_config["model_params"]["n_jobs"] == -1
         assert train_config["train_test_split"]["test_size"] == 0.2
 
         # # attempt to train with dummy data
-        random_state = train_config["model_params"]["random_state"]
+        random_state = model_config.random_state
         X_train, X_test, y_train, y_test = train_test_split(
             X, y, random_state=random_state, **train_config["train_test_split"]
         )

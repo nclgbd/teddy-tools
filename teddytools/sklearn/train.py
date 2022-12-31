@@ -18,7 +18,7 @@ from mlflow import MlflowClient
 from teddytools.utils import repl, get_console
 from teddytools.utils.config import Configuration
 from teddytools.utils.argparsers import create_default_parser
-from teddytools.sklearn.model import SKLearnModelConfiguration
+from teddytools.sklearn.model import SKLearnModelConfiguration, build_clf
 from teddytools.sklearn.pipeline import *
 
 console = get_console()
@@ -69,31 +69,27 @@ def mlflow_setup(
     return mlflow_run
 
 
-def main(args):
+def main(X: np.ndarray, y: np.ndarray, args):
 
     # step 0: load configurations
-    run_config_yaml_path = args.run_config_yaml_path
-    run_config = Configuration(yaml_file=run_config_yaml_path)
+    run_config = Configuration(yaml_file=args.run_config_yaml_file)
 
-    model_config_yaml_path = (
-        args.model_config_yaml_path
-        if "model_config_yaml_path" in args
-        else run_config.modules["sklearn"]["model_config_yaml_path"]
-    )
-    model_config = SKLearnModelConfiguration(yaml_file=model_config_yaml_path)
-    train_config = model_config.configurations["train"]
-
-    # step 1a: load data
-    # TODO: add way to load custom data
-    if run_config._test == True:
-        X, y = load_digits(return_X_y=True)
-
-    # pre-run setup
+    # enable logging via mlflow
     mlflow_enabled = run_config.use_mlflow
     if mlflow_enabled:
         mlflow_run = mlflow_setup()
 
-    # step 1b: process data using preprocessing pipeline
+    model_config_yaml_file = (
+        args.model_config_yaml_file
+        if "model_config_yaml_file" in args
+        else run_config.model_config_yaml_file
+    )
+    model_config = SKLearnModelConfiguration(yaml_file=model_config_yaml_file)
+    run_type = run_config.configuration
+    train_config = model_config.configurations[run_type]
+    random_state = run_config.random_state
+
+    # step 1: preprocess data using preprocessing pipeline
     preprocessing_pipeline = build_preprocessing_pipeline(
         run_config=run_config,
     )
@@ -105,8 +101,7 @@ def main(args):
         run_config=run_config,
     )
 
-    # step 3: form tr
-    random_state = train_config["model_params"]["random_state"]
+    # step 3: create train/test split
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, random_state=random_state, **train_config["train_test_split"]
     )

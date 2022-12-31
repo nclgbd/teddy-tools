@@ -17,12 +17,13 @@ repl.install()
 
 class TestTrain:
 
-    def test_basic_train(self, run_config_yaml_path, model_config_yaml_path):
+    def test_basic_train(self, data, run_config_yaml_file, model_config_yaml_file):
         args = Namespace(
-            run_config_yaml_path=run_config_yaml_path,
-            model_config_yaml_path=model_config_yaml_path,
+            run_config_yaml_file=run_config_yaml_file,
+            model_config_yaml_file=model_config_yaml_file,
         )
 
-        main(args)
+        X, y = data
+        main(X, y, args)
 
         assert True

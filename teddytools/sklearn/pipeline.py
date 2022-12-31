@@ -6,8 +6,7 @@ from sklearn import preprocessing
 from sklearn.pipeline import Pipeline
 
 # local imports
-from teddytools.utils.config import Configuration
-from teddytools.sklearn.model import SKLearnModelConfiguration
+from teddytools.utils.config import Configuration, create_configuration_from_yaml
 
 _AVAILABLE_PREPROCESSING_STEPS = [decomposition, preprocessing]
 
@@ -18,14 +17,15 @@ def build_preprocessing_pipeline(
 ):
     # get the configuration
     run_config = (
-        Configuration(yaml_file=run_config_yaml_path)
+        create_configuration_from_yaml(
+            yaml_file=run_config_yaml_path, _configuration_class=Configuration
+        )
         if run_config is None
         else run_config
     )
     pipeline = Pipeline(steps=[])
-    sklearn_configurations = run_config.sklearn
-    run_type = run_config.type
-    pipeline_steps = sklearn_configurations["configurations"][run_type]["steps"]
+    sklearn_configurations = run_config.pipelines
+    pipeline_steps = sklearn_configurations["preprocessing"]["steps"]
 
     # for step, step_params in pipeline_steps:
     for _pipeline_step in pipeline_steps:
@@ -39,34 +39,3 @@ def build_preprocessing_pipeline(
                 pipeline.steps.append((step_name.lower(), step_instance))
 
     return pipeline
-
-
-def build_clf(
-    model_config: SKLearnModelConfiguration = None,
-    model_config_yaml_path: os.PathLike = "",
-    run_config: Configuration = None,
-    run_config_yaml_path: os.PathLike = "",
-):
-
-    # get the configuration
-    run_config = (
-        Configuration(yaml_file=run_config_yaml_path)
-        if run_config is None
-        else run_config
-    )
-    model_config_yaml_path = (
-        run_config.model_config_yaml_path
-        if model_config_yaml_path == ""
-        else model_config_yaml_path
-    )
-
-    # get the model configuration
-    model_config = (
-        SKLearnModelConfiguration(yaml_file=model_config_yaml_path)
-        if model_config is None
-        else model_config
-    )
-
-    # get the model parameters
-    run_type = run_config.type if "type" in run_config else "train"
-    model_config.build_model(mode=run_type)

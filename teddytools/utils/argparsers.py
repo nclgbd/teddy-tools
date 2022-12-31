@@ -17,7 +17,6 @@ def create_default_parser():
     )
     parser.add_argument(
         "--model_config_yaml_path",
-        default="tests/config/runconfig/modelconfig/logisticregression.yaml",
         help="Path to model configuration file. If not set here, is inferred from `runconfig` argument.",
         type=str,
     )
