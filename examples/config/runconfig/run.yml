@@ -1,0 +1,23 @@
+# test run configuration
+_test: true
+configuration: train
+debug: true
+dry_run: true
+random_state: 42
+
+# pathing
+yaml_file: examples/config/runconfig/run.yml
+model_config_yaml_file: examples/config/modelconfig/logisticregression.yaml
+
+# rule of thumb: if adding a flag causes a code rework to the pipeline, then it should be in this config
+use_cv: true
+use_mlflow: true
+
+# different configurations available for the project
+pipelines:
+  preprocessing:
+    steps:
+      - PCA:
+          n_components: 2
+      - StandardScaler:
+          with_mean: false
