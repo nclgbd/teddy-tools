@@ -3,7 +3,7 @@ import pytest
 
 # teddytools imports
 from teddytools.utils import repl, get_console
-from teddytools.train import train
+from teddytools.scripts.train import train
 
 repl.install()
 console = get_console()

@@ -1,0 +1,14 @@
+name: example-project
+
+dependencies:
+  - matplotlib
+  - mlflow
+  - pandas
+  - python=3.9
+  - seaborn
+  - sklearn
+  - pip:
+      - pyyaml
+      - rich
+      - tabulate
+      - teddytools

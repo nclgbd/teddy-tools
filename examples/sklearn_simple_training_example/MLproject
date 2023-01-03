@@ -1,0 +1,14 @@
+name: example-project
+
+conda_env: envs/environment.yml
+
+entry_points:
+  main:
+    parameters:
+      run_config_yaml_file:
+        type: path
+        default: examples/config/runconfig/run.yml
+      model_config_yaml_file:
+        type: path
+        default: examples/config/modelconfig/logisticregression.yaml
+    command: "python teddytools/scripts/train.py -r {run_config_yaml_file} -m {model_config_yaml_file}"
