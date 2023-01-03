@@ -120,7 +120,12 @@ def train(args, X: np.ndarray = None, y: np.ndarray = None):
         console.print(f"artifacts:\n{artifacts}")
 
 
-if __name__ == "__main__":
+def main():
+
     parser = create_default_parser()
     args = parser.parse_args()
     train(args)
+
+
+if __name__ == "__main__":
+    main()

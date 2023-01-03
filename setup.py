@@ -14,4 +14,5 @@ setup(
     description="Teddy tools.",
     long_description=long_description,
     long_description_content_type="text/markdown",
+    entry_points={"console_scripts": ["teddytools-train=teddytools.scripts.train:main"]},
 )

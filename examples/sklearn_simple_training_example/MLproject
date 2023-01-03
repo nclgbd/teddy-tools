@@ -11,4 +11,4 @@ entry_points:
       model_config_yaml_file:
         type: path
         default: examples/config/modelconfig/logisticregression.yaml
-    command: "python teddytools/scripts/train.py -r {run_config_yaml_file} -m {model_config_yaml_file}"
+    command: "teddytools-train -r {run_config_yaml_file} -m {model_config_yaml_file}"
