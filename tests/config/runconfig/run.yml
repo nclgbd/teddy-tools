@@ -4,6 +4,7 @@ configuration: train
 debug: true
 dry_run: true
 random_state: 42
+allow_non_validated_model: true
 
 # pathing
 yaml_file: tests/config/runconfig/run.yml
@@ -12,7 +13,36 @@ model_config_yaml_file: tests/config/modelconfig/logisticregression.yaml
 # rule of thumb: if adding a flag causes a code rework to the pipeline, then it should be in this config
 use_cv: true
 use_mlflow: true
-
+mlflow_settings:
+  recipe-yaml:
+    recipe: "classification/v1"
+    target_col: "y"
+    positive_class: "0"
+    primary_metric: "accuracy"
+    steps:
+      ingest: { { INGEST_CONFIG } }
+      split:
+        split_ratios: [0.8, 0.1, 0.1]
+      transform:
+        using: "custom"
+        transformer_method: transformer_fn
+      train:
+        using: "custom"
+      evaluate:
+        validation_criteria:
+          - "accuracy"
+      register:
+        allow_non_validated_model: false
+  profiles:
+    local:
+      experiment:
+        name: "test"
+        artifact_location: "tests/mlruns"
+        tracking_uri: "sqlite:///metadata/mlflow/mlruns.db"
+      model_registry:
+        model_name:
+      INGEST_CONFIG:
+        using: "custom"
 # different configurations available for the project
 pipelines:
   preprocessing:
