@@ -72,16 +72,10 @@ def generate_recipe_template(
     recipe_yaml_file: str = "recipe.yaml",
 ):
     console.log("Generating recipe template...")
-    recipe_dict = {}
+    recipe_dict = run_config.mlflow_settings["recipe-yaml"]
 
-    # set up constant values
-    recipe_dict["recipe"] = "classification/v1"
-    recipe_paths = _create_recipe_dirs()
-    for path in _RECIPE_DIRS:
-        recipe_dict[path] = {}
-
-    # create steps
-    create_steps_from_config(recipe_dict, run_config, model_config)
+    # # create steps
+    # create_steps_from_config(recipe_dict, run_config, model_config)
 
     # save recipe to "recipe.yaml"
     with open(recipe_yaml_file, "w") as f:

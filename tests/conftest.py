@@ -35,4 +35,4 @@ def model_config_yaml_file():
 
 @pytest.fixture
 def test_artifacts_dir():
-    return "tests/artifacts"
+    return "tests_artifacts/"

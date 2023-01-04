@@ -15,12 +15,13 @@ use_cv: true
 use_mlflow: true
 mlflow_settings:
   recipe-yaml:
-    recipe: "classification/v1"
-    target_col: "y"
     positive_class: "0"
     primary_metric: "accuracy"
+    recipe: "classification/v1"
+    target_col: "y"
+
     steps:
-      ingest: { { INGEST_CONFIG } }
+      ingest: '{{INGEST_CONFIG}}'
       split:
         split_ratios: [0.8, 0.1, 0.1]
       transform:
@@ -33,6 +34,7 @@ mlflow_settings:
           - "accuracy"
       register:
         allow_non_validated_model: false
+
   profiles:
     local:
       experiment:
@@ -43,6 +45,7 @@ mlflow_settings:
         model_name:
       INGEST_CONFIG:
         using: "custom"
+
 # different configurations available for the project
 pipelines:
   preprocessing:

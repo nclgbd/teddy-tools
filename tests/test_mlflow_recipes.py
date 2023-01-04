@@ -28,10 +28,9 @@ class TestMLflowRecipes:
         )
         return model_config
 
-    def test_create_steps_from_config(self, run_config, model_config):
-        recipe_dict = {}
-        create_steps_from_config(
-            recipe_dict=recipe_dict, run_config=run_config, model_config=model_config
+    def test_generate_recipe_template(self, run_config, model_config):
+        recipe_dict = generate_recipe_template(
+            run_config, model_config, recipe_yaml_file="test_artifacts_dir/recipe.yaml"
         )
         assert recipe_dict["steps"] is not None
 
@@ -41,11 +40,9 @@ class TestMLflowRecipes:
 
         # additional register checks
         assert steps["register"] is not None
-        assert steps["register"]["allow_non_validated_model"] == True
+        assert steps["register"]["allow_non_validated_model"] == False
 
         assert steps["split"] is not None
         assert steps["transform"] is not None
         assert steps["train"] is not None
         assert steps["evaluate"] is not None
-
-        # check to see that "recipe.yaml" file was created
