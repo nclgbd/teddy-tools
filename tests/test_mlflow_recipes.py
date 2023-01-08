@@ -28,9 +28,14 @@ class TestMLflowRecipes:
         )
         return model_config
 
-    def test_generate_recipe_template(self, run_config, model_config):
+    def test_generate_recipe_template(
+        self,
+        run_config,
+        model_config,
+        recipe_yaml_file="tests/test_artifacts/recipe.yaml",
+    ):
         recipe_dict = generate_recipe_template(
-            run_config, model_config, recipe_yaml_file="test_artifacts_dir/recipe.yaml"
+            run_config, model_config, recipe_yaml_file=recipe_yaml_file
         )
         assert recipe_dict["steps"] is not None
 
