@@ -21,7 +21,7 @@ mlflow_settings:
     target_col: "y"
 
     steps:
-      ingest: '{{INGEST_CONFIG}}'
+      ingest: "{{INGEST_CONFIG}}"
       split:
         split_ratios: [0.8, 0.1, 0.1]
       transform:

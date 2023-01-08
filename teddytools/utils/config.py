@@ -81,7 +81,7 @@ def create_configuration_from_yaml(
         `_configuration_class` (`_BaseConfiguration`): Configuration class to use. Defaults to `Configuration`.
 
     ## Returns:
-        `_BaseConfiguration`: _description_
+        `_BaseConfiguration`: The configuration object to be created from the YAML file.
     """
     with open(yaml_file, "r") as f:
         y = yaml.safe_load(f)

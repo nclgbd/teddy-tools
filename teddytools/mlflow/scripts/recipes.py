@@ -1,7 +1,13 @@
 import os
 import yaml
 from teddytools.utils import repl, get_console, get_logger, load_yaml
-from teddytools.utils.config import Configuration, ModelConfiguration
+from teddytools.utils.argparsers import create_default_parser
+from teddytools.utils.config import (
+    Configuration,
+    ModelConfiguration,
+    create_configuration_from_yaml,
+)
+from teddytools.sklearn.model import SKLearnModelConfiguration
 
 _RECIPE_DIRS = ["notebooks", "profiles", "steps"]
 
@@ -68,7 +74,7 @@ def create_steps_from_config(
 
 def generate_recipe_template(
     run_config: Configuration,
-    model_config: ModelConfiguration,
+    model_config: ModelConfiguration = None,
     recipe_yaml_file: str = "recipe.yaml",
 ):
     console.log("Generating recipe template...")
@@ -86,5 +92,38 @@ def generate_recipe_template(
     return recipe_dict
 
 
+def generate_recipe_template_parser():
+    parser = create_default_parser()
+    parser.add_argument(
+        "-R",
+        "--recipe_yaml_file",
+        type=str,
+        help="Recipe YAML file save location.",
+        default="recipe.yaml",
+    )
+    args = parser.parse_args()
+    run_config = create_configuration_from_yaml(
+        args.run_config_yaml_file, Configuration
+    )
+    model_config_yaml_file = (
+        args.model_config_yaml_file
+        if "model_config_yaml_file" in vars(args)
+        else run_config.model_config_yaml_file
+    )
+    model_config = create_configuration_from_yaml(
+        model_config_yaml_file, SKLearnModelConfiguration
+    )
+    return {
+        "run_config": run_config,
+        "model_config": model_config,
+        "recipe_yaml_file": args.recipe_yaml_file,
+    }
+
+
+def main():
+    script_args = generate_recipe_template_parser()
+    generate_recipe_template(**script_args)
+
+
 if __name__ == "__main__":
-    generate_recipe_template()
+    main()
